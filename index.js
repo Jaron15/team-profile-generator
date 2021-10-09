@@ -115,7 +115,7 @@ function addIntern() {
         const intern = new Intern(answers.name, answers.ID, answers.email, answers.school);
 
         teamArray.push(intern);
-        console.log(teamArray);
+        
         mainMenu();
     })
 };
