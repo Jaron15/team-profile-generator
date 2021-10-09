@@ -24,6 +24,8 @@
         text-align: initial;
         border-bottom: solid;
         padding: .5vh 1vh;
+        white-space: nowrap;
+        overflow: hidden;
       }
       .body-info p:last-child {
         border-bottom: none
