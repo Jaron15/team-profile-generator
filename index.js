@@ -1,5 +1,11 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
+const Manager = require('./lib/Manager');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
+const htmlGenerator = require('./dist/htmlGenerator');
+
+const teamArray = [];
 
 function mainMenu() {
     inquirer
@@ -18,6 +24,8 @@ function mainMenu() {
             addEngineer();
         } else if (choice === "Add an intern") {
             addIntern();
+        } else {
+            buildTeam();
         }
     })
 }
@@ -40,11 +48,13 @@ function addManager() {
     },
     {
         type: 'input',
-        name: 'office number',
+        name: 'officeNumber',
         message: "What is the Manager's office number?",
     }])
     .then(function(answers) {
-        console.log(answers);
+        const manager = new Manager(answers.name, answers.ID, answers.email, answers.officeNumber);
+
+        teamArray.push(manager);
 
         mainMenu();
     })
@@ -54,25 +64,27 @@ function addEngineer() {
     .prompt([{
         type: 'input',
         name: 'name',
-        message: "What is the Manager's name?",
+        message: "What is the Engineer's name?",
     },
     {
         type: 'input',
         name: 'ID',
-        message: "What is the Manager's ID?",
+        message: "What is the Engineer's ID?",
     },
     {
         type: 'input',
         name: 'email',
-        message: "What is the Manager's email?",
+        message: "What is the Engineer's email?",
     },
     {
         type: 'input',
         name: 'github',
-        message: "What is the GitHub username?",
+        message: "What is their GitHub username?",
     }])
     .then(function(answers) {
-        console.log(answers);
+        const engineer = new Engineer(answers.name, answers.ID, answers.email, answers.github);
+
+        teamArray.push(engineer);
 
         mainMenu();
     })
@@ -82,27 +94,33 @@ function addIntern() {
     .prompt([{
         type: 'input',
         name: 'name',
-        message: "What is the Manager's name?",
+        message: "What is the Intern's name?",
     },
     {
         type: 'input',
         name: 'ID',
-        message: "What is the Manager's ID?",
+        message: "What is the Intern's ID?",
     },
     {
         type: 'input',
         name: 'email',
-        message: "What is the Manager's email?",
+        message: "What is the Intern's email?",
     },
     {
         type: 'input',
         name: 'school',
-        message: "What school did the intern go to?",
+        message: "What school did the Intern go to?",
     }])
     .then(function(answers) {
-        console.log(answers);
+        const intern = new Intern(answers.name, answers.ID, answers.email, answers.school);
 
+        teamArray.push(intern);
+        console.log(teamArray);
         mainMenu();
     })
-}
+};
+
+function buildTeam() {
+    fs.writeFileSync('./dist/team.html', htmlGenerator(teamArray))
+} 
 mainMenu();
